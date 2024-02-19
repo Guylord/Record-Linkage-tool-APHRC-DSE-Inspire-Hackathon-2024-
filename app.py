@@ -3,7 +3,7 @@ import pandas as pd
 import recordlinkage as rl
 from recordlinkage.preprocessing import clean
 
-# Function to perform record linkage
+# Function to perform record linkage and return potential matches
 def perform_record_linkage(hdss_df, facility_df):
     # Preprocessing
     for col in facility_df.select_dtypes('object').columns:
@@ -11,7 +11,6 @@ def perform_record_linkage(hdss_df, facility_df):
     facility_df['visitdate'] = pd.to_datetime(facility_df['visitdate'], format='%d-%m-%Y')    
     facility_df['fullname'] = facility_df['firstname'].fillna('') + ' ' + facility_df['lastname'].fillna('') + ' ' + facility_df['petname'].fillna('')
     facility_df['dob'] = pd.to_datetime(facility_df['dob'])
-    
 
     for col in hdss_df.select_dtypes('object').columns:
         clean(hdss_df[col], replace_by_none='[^ \\-\\_A-Za-z0-9]+', remove_brackets=True)
@@ -31,15 +30,16 @@ def perform_record_linkage(hdss_df, facility_df):
 
     potential_matches = compare.compute(pairs, hdss_df, facility_df)
 
-    # Classification
+    # Model
     kmeans = rl.KMeansClassifier()
     kmeans.fit(potential_matches)
     matched_indices = kmeans.predict(potential_matches)
+    len(matched_indices)
 
-    # Merge datasets
+    # Get matched records
     hdss_facility = pd.concat([hdss_df.loc[matched_indices.get_level_values(0)], facility_df.loc[matched_indices.get_level_values(1)]])
+    hdss_facility.sort_values('firstname', inplace=True)
     hdss_facility.drop_duplicates(inplace=True)
-
     return hdss_facility
 
 # Streamlit app
@@ -54,15 +54,15 @@ if hdss_file and facility_file:
     hdss_df = pd.read_csv(hdss_file)
     facility_df = pd.read_csv(facility_file)
 
+    # Set index for record linkage
+    hdss_df.set_index('recnr', inplace=True)
+    facility_df.set_index('recnr', inplace=True)
+
     # Perform record linkage when button is clicked
     if st.sidebar.button('Perform Record Linkage'):
         # Call the function to perform record linkage
-        merged_data = perform_record_linkage(hdss_df, facility_df)
+        matched_records = perform_record_linkage(hdss_df, facility_df)
 
-        # Display merged data
-        st.write('Merged Dataset:')
-        st.write(merged_data)
-
-        # Save merged data to CSV
-        merged_data.to_csv('matched_data.csv', index=False)
-        st.success('Merged dataset saved as matched_data.csv')
+        # Display matched records
+        st.write('Potential Matches:')
+        st.write(matched_records)
