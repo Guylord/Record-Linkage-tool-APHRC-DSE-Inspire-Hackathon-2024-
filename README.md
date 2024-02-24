@@ -84,8 +84,3 @@ To run the Streamlit app, use the following command in your terminal:
 
 ```bash
 streamlit run app.py
-
-
-
-
-
