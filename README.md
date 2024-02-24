@@ -59,6 +59,12 @@ Users can interact with the application through the following steps:
 - Click the 'Perform Record Linkage' button to trigger the record linkage process.
 - Explore the results, i.e., potential matched records, displayed in the main section of the web app.
 
+# Future Improvements
+
+- Enhance the user interface with additional features and visualizations.
+- Optimize the record linkage algorithm for larger datasets.
+- Include options for customizing matching thresholds.
+
 ## Dependencies
 
 The code relies on the following Python libraries:
@@ -79,9 +85,7 @@ To run the Streamlit app, use the following command in your terminal:
 ```bash
 streamlit run app.py
 
-# Future Improvements
 
-- Enhance the user interface with additional features and visualizations.
-- Optimize the record linkage algorithm for larger datasets.
-- Include options for customizing matching thresholds.
+
+
 
