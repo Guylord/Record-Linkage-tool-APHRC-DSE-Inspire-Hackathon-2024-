@@ -54,6 +54,7 @@ Users can interact with the application through the following steps:
 - Upload HDSS and facility CSV files using the sidebar file uploaders.
 - Click the 'Perform Record Linkage' button to trigger the record linkage process.
 - Explore the results, i.e., potential matched records, displayed in the main section of the web app.
+- Input a name into the provided search box, and if entered, the application filters and displays records with matching first or last names
 
 ## Future Improvements
 
