@@ -1,5 +1,10 @@
 # APHRC DSE Inspire Hackathon 2024
 
+## Team
+- Elizabeth Waithera
+- Patel Mark
+- Guylord Angaya
+
 ## Overview
 
 This project showcases the integration of health data from two sources, a Health and Demographic Surveillance System (HDSS), and health facility records, using record linkage techniques. The aim is to identify and merge records corresponding to the same individuals across datasets.
